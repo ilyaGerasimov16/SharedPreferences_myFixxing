@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.fab).setOnClickListener(view -> {
-            userNotes.add(new UserNote("New note", new Date(), "New note"));
+            userNotes.add(new UserNote("Note " + (userNotes.size() + 1), new Date(), "New note"));
             notesAdapter.setNewData(userNotes);
             String jsonNotes = new GsonBuilder().create().toJson(userNotes);
             sharedPref.edit().putString(KEY, jsonNotes).apply();
