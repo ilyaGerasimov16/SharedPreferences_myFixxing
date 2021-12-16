@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private ArrayList<UserNote> dataSet;
+    public ArrayList<UserNote> dataSet;
 
     public NotesAdapter(ArrayList<UserNote> dataSet) {
         this.dataSet = dataSet;

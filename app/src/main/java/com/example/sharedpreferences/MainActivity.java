@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sharedPref = getSharedPreferences("My Preferences", MODE_PRIVATE);
 
-        final ArrayList<UserNote> userNotes = new ArrayList<>();
+        ArrayList<UserNote> userNotes = new ArrayList<>();
         final NotesAdapter notesAdapter = new NotesAdapter(userNotes);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setAdapter(notesAdapter);
@@ -39,15 +39,20 @@ public class MainActivity extends AppCompatActivity {
                 Type type = new TypeToken<ArrayList<UserNote>>() {
                 }.getType();
                 notesAdapter.setNewData(new GsonBuilder().create().fromJson(savedNotes, type));
+                userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
             } catch (JsonSyntaxException e) {
                 Toast.makeText(this, "Ошибка трансформации", Toast.LENGTH_SHORT).show();
             }
         }
 
+        ArrayList<UserNote> finalUserNotes = userNotes;
         findViewById(R.id.fab).setOnClickListener(view -> {
-            userNotes.add(new UserNote("Note " + (userNotes.size() + 1), new Date(), "New note"));
-            notesAdapter.setNewData(userNotes);
-            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+
+
+            finalUserNotes.add(new UserNote("Note " + (finalUserNotes.size() + 1),
+                    new Date(), "всего " + notesAdapter.getItemCount()));
+            notesAdapter.setNewData(finalUserNotes);
+            String jsonNotes = new GsonBuilder().create().toJson(finalUserNotes);
             sharedPref.edit().putString(KEY, jsonNotes).apply();
         });
     }
